@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
 """Unit tests for the BookStore system using mocks and assertions."""
+
 # -*- coding: utf-8 -*-
 import unittest
 from unittest.mock import Mock, call, patch
