@@ -1,11 +1,13 @@
+# -*- coding: utf-8 -*-
 import unittest
-from unittest.mock import patch, Mock, call
+from unittest.mock import Mock, call, patch
 
-#Import class main
+# Import class main
 from src.book_store import Book, BookStore
 
+
 class TestBookStore(unittest.TestCase):
-    """Unit test Book Store """
+    """Unit test Book Store"""
 
     def setUp(self):
         """Set up for each test"""
@@ -17,15 +19,15 @@ class TestBookStore(unittest.TestCase):
         book = Book("Harry Potter", "J.K. Rowling", 10.99, 10)
 
         # Act & Assert
-        with patch('builtins.print') as mock_print:
+        with patch("builtins.print") as mock_print:
             book.display()
 
-            #Check prints
+            # Check prints
             expected_calls = [
-                unittest.mock.call('Title: Harry Potter'),
-                unittest.mock.call('Author: J.K. Rowling'),
-                unittest.mock.call('Price: $10.99'),
-                unittest.mock.call('Quantity: 10'),
+                unittest.mock.call("Title: Harry Potter"),
+                unittest.mock.call("Author: J.K. Rowling"),
+                unittest.mock.call("Price: $10.99"),
+                unittest.mock.call("Quantity: 10"),
             ]
             mock_print.assert_has_calls(expected_calls)
             self.assertEqual(mock_print.call_count, 4)
@@ -34,10 +36,10 @@ class TestBookStore(unittest.TestCase):
         """Test BookStore.add_book method a book to the store"""
         # Arrage:
         mock_book = Mock()
-        mock_book.title = 'Mock Book'
+        mock_book.title = "Mock Book"
 
         # Act
-        with patch('builtins.print') as mock_print:
+        with patch("builtins.print") as mock_print:
             self.bookstore.add_book(mock_book)
 
         # Assert
@@ -47,7 +49,7 @@ class TestBookStore(unittest.TestCase):
     def test_display_books_empty(self):
         """Test BookStore.display_books method when store is empty"""
         # Act
-        with patch('builtins.print') as mock_print:
+        with patch("builtins.print") as mock_print:
             self.bookstore.display_books()
 
         # Assert
@@ -61,7 +63,7 @@ class TestBookStore(unittest.TestCase):
         self.bookstore.books = [mock_book1, mock_book2]
 
         # Act
-        with patch('builtins.print') as mock_print:
+        with patch("builtins.print") as mock_print:
             self.bookstore.display_books()
 
         # Assert
@@ -75,26 +77,28 @@ class TestBookStore(unittest.TestCase):
         """Test bookStore.search_book when book is not found"""
         # Arrage
         mock_book = Mock()
-        mock_book.title = 'Existing Book'
+        mock_book.title = "Existing Book"
         self.bookstore.books = [mock_book]
 
         # Act
-        with patch('builtins.print') as mock_print:
-            self.bookstore.search_book('Non Existent Book')
+        with patch("builtins.print") as mock_print:
+            self.bookstore.search_book("Non Existent Book")
 
         # Assert
-        mock_print.assert_called_once_with("No book found with title 'Non Existent Book'.")
+        mock_print.assert_called_once_with(
+            "No book found with title 'Non Existent Book'."
+        )
 
     def test_search_book_found(self):
         """Test BookStore.search_book when book is found"""
         # Arrage
         mock_book = Mock()
-        mock_book.title = 'Python Basics'
+        mock_book.title = "Python Basics"
         self.bookstore.books = [mock_book]
 
         # Act
-        with patch('builtins.print') as mock_print:
-            self.bookstore.search_book('Python Basics')
+        with patch("builtins.print") as mock_print:
+            self.bookstore.search_book("Python Basics")
 
         # Assert
         mock_print.assert_any_call("Found 1 book(s) with title 'Python Basics':")
@@ -104,12 +108,12 @@ class TestBookStore(unittest.TestCase):
         """Test BookStore.search_book is case insensitive"""
         # Arrage
         mock_book = Mock()
-        mock_book.title = 'Python Basics'
+        mock_book.title = "Python Basics"
         self.bookstore.books = [mock_book]
 
         # Act
-        with patch('builtins.print') as mock_print:
-            self.bookstore.search_book('python basics')
+        with patch("builtins.print") as mock_print:
+            self.bookstore.search_book("python basics")
 
         # Assert
         mock_print.assert_any_call("Found 1 book(s) with title 'python basics':")
@@ -135,20 +139,21 @@ class TestBookStore(unittest.TestCase):
             ]
         )
 
-        #Test the main function with mocked input/output and Bookstore
-        with patch('builtins.input', side_effect=lambda _: next(inputs)), \
-            patch('builtins.print'), \
-            patch('src.book_store.BookStore', return_value=mock_bookstore), \
-            patch('src.book_store.Book') as mock_book_class:
+        # Test the main function with mocked input/output and Bookstore
+        with patch("builtins.input", side_effect=lambda _: next(inputs)), patch(
+            "builtins.print"
+        ), patch("src.book_store.BookStore", return_value=mock_bookstore), patch(
+            "src.book_store.Book"
+        ) as mock_book_class:
 
-            #configure the mock Book class return a mock book
+            # configure the mock Book class return a mock book
             mock_book = Mock()
             mock_book_class.return_value = mock_book
 
-            #Import main after patching dependencies
+            # Import main after patching dependencies
             from src.book_store import main
 
-            #Run the main function
+            # Run the main function
             main()
 
             # Verify that the bookstore methods were called correctly
@@ -157,4 +162,4 @@ class TestBookStore(unittest.TestCase):
             mock_bookstore.add_book.assert_called_once_with(mock_book)
 
             # Verify that Book constructor was called with correct parameters
-            mock_book_class.assert_called_once_with("Test Book", "Author",10.99,5)
+            mock_book_class.assert_called_once_with("Test Book", "Author", 10.99, 5)
