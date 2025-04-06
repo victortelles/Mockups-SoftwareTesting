@@ -121,16 +121,19 @@ class TestBookStore(unittest.TestCase):
         mock_bookstore = Mock(spec=BookStore)
 
         # Mock the input functions to simulate user inputs
-        inputs = iter(["1",
-                        "2",
-                        "Python Book",
-                        "3",
-                        "Test Book",
-                        "Author",
-                        "10.99",
-                        "5",
-                        "4",
-                        ])
+        inputs = iter(
+            [
+                "1",
+                "2",
+                "Python Book",
+                "3",
+                "Test Book",
+                "Author",
+                "10.99",
+                "5",
+                "4",
+            ]
+        )
 
         #Test the main function with mocked input/output and Bookstore
         with patch('builtins.input', side_effect=lambda _: next(inputs)), \
